@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import arrayToObject from './lib/array-to-object';
 
 function objectEntries(obj) {
@@ -28,9 +29,10 @@ export function getField(state) {
 
 export function updateField(state, { path, value }) {
   path.split(/[.[\]]+/).reduce((prev, key, index, array) => {
-    if (array.length === index + 1) {
-      // eslint-disable-next-line no-param-reassign
-      prev[key] = value;
+    if (index < array.length - 1) {
+      Vue.set(prev, key, prev[key] ? prev[key] : {});
+    } else { // last key
+      Vue.set(prev, key, value);
     }
 
     return prev[key];
